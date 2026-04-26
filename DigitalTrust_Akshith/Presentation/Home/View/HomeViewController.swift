@@ -24,7 +24,7 @@ class HomeViewController: UIViewController, StoryboardInstantiable {
         vc.viewModel = viewModel
         return vc
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
@@ -93,9 +93,15 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             cell.setupCell(data)
             cell.didClickOnQRCode = { [weak self] in
                 guard let self else { return }
-                UIView.animate(withDuration: 0.7, delay: 0, options: [.curveEaseInOut]) {
-                    self.tableView.performBatchUpdates {
-                        cell.layoutIfNeeded()
+                UIView.animate(withDuration: 0.7, delay: 0,usingSpringWithDamping: 0.9,
+                               initialSpringVelocity: 0.5, options: [.curveEaseInOut]) {
+                    if #available(iOS 26.0, *) {
+                        self.tableView.beginUpdates()
+                        self.tableView.endUpdates()
+                    } else {
+                        self.tableView.performBatchUpdates {
+                            cell.layoutIfNeeded()
+                        }
                     }
                 }
             }

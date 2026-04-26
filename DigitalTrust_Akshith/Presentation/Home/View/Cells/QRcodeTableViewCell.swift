@@ -8,7 +8,7 @@
 import UIKit
 
 class QRcodeTableViewCell: UITableViewCell {
-
+    
     @IBOutlet weak var bgView: UIView!
     @IBOutlet weak var walletImageView: UIImageView!
     @IBOutlet weak var bgWalletView1: UIView!
@@ -31,7 +31,7 @@ class QRcodeTableViewCell: UITableViewCell {
         setupView()
         registerCells()
     }
-
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
@@ -74,6 +74,18 @@ class QRcodeTableViewCell: UITableViewCell {
         stackView.spacing = 16
     }
     
+    @IBAction func qrCodeBtnAction(_ sender: UIButton) {
+        expanded.toggle()
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            qrCodeConstrains()
+            self.didClickOnQRCode?()
+        }
+    }
+}
+
+extension QRcodeTableViewCell {
+    
     func setupCell(_ data: [InfoCard]) {
         items = data
         DispatchQueue.main.async { [weak self] in
@@ -83,21 +95,9 @@ class QRcodeTableViewCell: UITableViewCell {
         }
     }
     
-    @IBAction func qrCodeBtnAction(_ sender: UIButton) {
-        expanded.toggle()
-        DispatchQueue.main.async { [weak self] in
-            guard let self else { return }
-            qrCodeConstrains()
-            self.didClickOnQRCode?()
-        }
-    }
-    
-    func qrCodeConstrains() {
-        UIView.animate(withDuration: 0.3) { [weak self] in
-            guard let self else { return }
-            qrBgImageViewHeightConstrain.constant = expanded ? 277 : 80
-            stackView.spacing = expanded ? 16 : 2
-        }
+    private func qrCodeConstrains() {
+        qrBgImageViewHeightConstrain.constant = expanded ? 277 : 80
+        stackView.spacing = expanded ? 16 : 2
     }
     
 }
@@ -122,6 +122,6 @@ extension QRcodeTableViewCell: UICollectionViewDelegateFlowLayout, UICollectionV
     }
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-       8
+        8
     }
 }
