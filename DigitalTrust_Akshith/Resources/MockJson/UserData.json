@@ -1,0 +1,75 @@
+{
+  "user": {
+    "id": 101,
+    "name": "Akshith Kumar",
+    "mobile": "9876543210",
+    "profile_image": "profileImage",
+    "account_type": "Premium",
+    "status": "Active"
+  },
+  "quick_actions": [
+    {
+      "id": 1,
+      "title": "Label-1",
+      "icon": "doc_icon"
+    },
+    {
+      "id": 2,
+      "title": "Label-2",
+      "icon": "scanner_icon"
+    },
+    {
+      "id": 3,
+      "title": "Label-3",
+      "icon": "signature_icon"
+    }
+  ],
+  "qr_card": {
+    "id": "QR001",
+    "qr_code_image": "qrcode",
+    "background_card_image": "qrcode_bg"
+  },
+  "personal_info": [
+    {
+      "id": 1,
+      "title": "Work",
+      "icon": "identificationCard",
+      "date": "12 Jul, 2025",
+      "status": "Approved",
+    },
+    {
+      "id": 2,
+      "title": "Home",
+      "icon": "house",
+      "date": "12 Jul, 2025",
+      "status": "Pending",
+    },
+    {
+      "id": 3,
+      "title": "Personal",
+      "icon": "ticket",
+      "date": "12 Jul, 2025",
+      "status": "Review",
+    }
+  ],
+  "info_card": [
+      {
+          "id": 1,
+          "title": "Digital Identity",
+          "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum",
+          "icon": "service_icons"
+      },
+      {
+          "id": 2,
+          "title": "Digital Identity",
+          "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum",
+          "icon": "service_icons"
+      },
+      {
+          "id": 3,
+          "title": "Digital Identity",
+          "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum",
+          "icon": "service_icons"
+      }
+  ]
+}
