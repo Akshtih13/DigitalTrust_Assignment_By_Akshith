@@ -30,7 +30,6 @@ class HomeViewController: UIViewController, StoryboardInstantiable {
         setupView()
         registerTableViewCell()
         bind()
-        viewModel.fetchUserData()
     }
     
     private func setupView() {
@@ -74,6 +73,45 @@ extension HomeViewController {
         tableView.register(PersonalInfoTableViewCell.self)
         tableView.register(EventsTableViewCell.self)
     }
+    
+    private func reloadTableViewCell(row: HomeTableViewRows, cell: UITableViewCell) {
+        switch row {
+        case .qrCode(_):
+            if let cell = cell as? QRcodeTableViewCell {
+                UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.9,
+                               initialSpringVelocity: 0.5, options: [.curveEaseInOut]) { [weak self] in
+                    guard let self else { return }
+                    if #available(iOS 26.0, *) {
+                        self.tableView.beginUpdates()
+                        self.tableView.endUpdates()
+                    } else {
+                        self.tableView.performBatchUpdates {
+                            cell.layoutIfNeeded()
+                        }
+                    }
+                }
+            }
+        case .personalInfo(_):
+            if let cell = cell as? PersonalInfoTableViewCell {
+                UIView.performWithoutAnimation { [weak self] in
+                    guard let self else { return }
+                    self.tableView.performBatchUpdates {
+                        cell.layoutIfNeeded()
+                    }
+                }
+            }
+        case .paginingTab(_):
+            if let cell = cell as? EventsTableViewCell {
+                UIView.performWithoutAnimation { [weak self] in
+                    guard let self else { return }
+                    self.tableView.performBatchUpdates {
+                        cell.layoutIfNeeded()
+                    }
+                }
+            }
+        default: break
+        }
+    }
 }
 
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
@@ -93,17 +131,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             cell.setupCell(data)
             cell.didClickOnQRCode = { [weak self] in
                 guard let self else { return }
-                UIView.animate(withDuration: 0.7, delay: 0,usingSpringWithDamping: 0.9,
-                               initialSpringVelocity: 0.5, options: [.curveEaseInOut]) {
-                    if #available(iOS 26.0, *) {
-                        self.tableView.beginUpdates()
-                        self.tableView.endUpdates()
-                    } else {
-                        self.tableView.performBatchUpdates {
-                            cell.layoutIfNeeded()
-                        }
-                    }
-                }
+                self.reloadTableViewCell(row: row, cell: cell)
             }
             return cell
         case .personalInfo(let data):
@@ -111,11 +139,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             cell.setupCell(title: row.title ?? "", data: data)
             cell.reloadData = { [weak self] in
                 guard let self else { return }
-                UIView.performWithoutAnimation {
-                    self.tableView.performBatchUpdates {
-                        cell.layoutIfNeeded()
-                    }
-                }
+                self.reloadTableViewCell(row: row, cell: cell)
             }
             return cell
         case .paginingTab(let data):
@@ -123,11 +147,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             cell.setupCell(data)
             cell.reloadData = { [weak self] in
                 guard let self else { return }
-                UIView.performWithoutAnimation {
-                    self.tableView.performBatchUpdates {
-                        cell.layoutIfNeeded()
-                    }
-                }
+                self.reloadTableViewCell(row: row, cell: cell)
             }
             return cell
         }
